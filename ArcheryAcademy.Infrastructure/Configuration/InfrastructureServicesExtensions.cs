@@ -1,3 +1,5 @@
+using ArcheryAcademy.Domain.Ports;
+using ArcheryAcademy.Infrastructure.Adapters.Repositories;
 using ArcheryAcademy.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +18,9 @@ public static class InfrastructureServicesExtensions
             var connectionString = configuration.GetConnectionString("DefaultConnection"); 
             options.UseNpgsql(connectionString);
         }); 
-        //unitofwork
+        //Repository Pattern
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }
