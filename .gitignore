@@ -7,3 +7,4 @@ ArcheryAcademy.API/bin
 ArcheryAcademy.Application/bin
 ArcheryAcademy.Domain/bin
 ArcheryAcademy.Infrastructure/bin
+ArcheryAcademy.API/appsettings.json
