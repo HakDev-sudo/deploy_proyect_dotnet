@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ArcheryAcademy.Domain.Enums;
 
 namespace ArcheryAcademy.Infrastructure.Persistence.Models;
 
@@ -14,6 +15,7 @@ public partial class User
     public string Email { get; set; } = null!;
 
     public string PasswordHash { get; set; } = null!;
+    public UserRole Role { get; set; }
 
     public string? Phone { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ArcheryAcademy.Domain.Enums;
 
 namespace ArcheryAcademy.Infrastructure.Persistence.Models;
 
@@ -10,6 +11,8 @@ public partial class Payment
     public int BookingId { get; set; }
 
     public decimal Amount { get; set; }
+    public PaymentStatus Status { get; set; }
+    public PaymentMethod Method { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 

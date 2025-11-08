@@ -35,6 +35,10 @@ public partial class ArcheryAcademyDbContext : DbContext
         modelBuilder.Entity<Booking>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("bookings_pkey");
+            
+            entity.Property(e => e.Status).HasConversion<string>();
+            
+            entity.Property(e => e.PaymentStatus).HasConversion<string>();
 
             entity.ToTable("bookings");
 
@@ -73,6 +77,10 @@ public partial class ArcheryAcademyDbContext : DbContext
         modelBuilder.Entity<Payment>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("payments_pkey");
+            
+            entity.Property(e => e.Status).HasConversion<string>();
+            
+            entity.Property(e => e.Method).HasConversion<string>();
 
             entity.ToTable("payments");
 
@@ -152,6 +160,8 @@ public partial class ArcheryAcademyDbContext : DbContext
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("users_pkey");
+            
+            entity.Property(e => e.Role).HasConversion<string>();
 
             entity.ToTable("users");
 
