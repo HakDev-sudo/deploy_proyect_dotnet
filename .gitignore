@@ -3,3 +3,7 @@ ArcheryAcademy.Application/obj
 ArcheryAcademy.Domain/obj
 ArcheryAcademy.Infrastructure/obj
 .idea
+ArcheryAcademy.API/bin
+ArcheryAcademy.Application/bin
+ArcheryAcademy.Domain/bin
+ArcheryAcademy.Infrastructure/bin
