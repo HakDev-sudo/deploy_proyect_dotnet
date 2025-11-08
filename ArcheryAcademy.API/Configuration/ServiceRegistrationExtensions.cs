@@ -1,4 +1,5 @@
 using ArcheryAcademy.Application.Mappings;
+using ArcheryAcademy.Application.MediatR;
 using ArcheryAcademy.Infrastructure.Configuration;
 using Microsoft.OpenApi.Models;
 
@@ -29,7 +30,10 @@ public static class ServiceRegistrationExtensions
         });
         // Registrar servicios de la capa Infrastructure
         services.AddInfrastructureServices(configuration);
-        
+        //Register MedistR
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(
+            typeof(ApplicationAssemblyMarker).Assembly
+        ));
         
         return services;
     }
