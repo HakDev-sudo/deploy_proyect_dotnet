@@ -1,4 +1,5 @@
 using ArcheryAcademy.Infrastructure.Configuration;
+using Microsoft.OpenApi.Models;
 
 namespace ArcheryAcademy.API.Configuration;
 
@@ -15,7 +16,16 @@ public static class ServiceRegistrationExtensions
         
         // Habilitar Swagger
         services.AddEndpointsApiExplorer();
-        
+        services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Mi API (Lab11_Juli)",
+                Version = "v1",
+                Description = "API para gestionar recursos del laboratorio."
+            });
+            
+        });
         // Registrar servicios de la capa Infrastructure
         services.AddInfrastructureServices(configuration);
         
