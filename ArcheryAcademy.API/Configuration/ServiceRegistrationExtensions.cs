@@ -1,3 +1,4 @@
+using ArcheryAcademy.Application.Mappings;
 using ArcheryAcademy.Infrastructure.Configuration;
 using Microsoft.OpenApi.Models;
 
@@ -7,8 +8,8 @@ public static class ServiceRegistrationExtensions
 {
     public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration configuration)
     {
-        
-        //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        // Add Automaper for DTOs
+        services.AddAutoMapper(typeof(MappingProfile));
         // Habilitar controladores de la API
         services.AddControllers();
         // Registra HttpContextAccessor (común para obtener info del request)
@@ -20,9 +21,9 @@ public static class ServiceRegistrationExtensions
         {
             options.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "Mi API (Lab11_Juli)",
+                Title = "Mi API (Arco y Flecha)",
                 Version = "v1",
-                Description = "API para gestionar recursos del laboratorio."
+                Description = "API para proyecto final."
             });
             
         });
