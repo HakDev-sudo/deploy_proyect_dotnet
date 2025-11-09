@@ -52,4 +52,17 @@ public class UserPlansController(IMediator mediator) : ControllerBase
 
         return Ok(result);
     }
+    
+    //delete
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var result = await mediator.Send(new DeleteUserPlanCommand(id));
+
+        if (!result)
+            return NotFound($"UserPlan with ID {id} was not found.");
+
+        return NoContent();
+    }
+
 }
