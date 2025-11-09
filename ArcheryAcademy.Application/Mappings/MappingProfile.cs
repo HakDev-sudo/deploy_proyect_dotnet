@@ -1,5 +1,6 @@
 using ArcheryAcademy.Application.Dtos.PaymentDto;
 using ArcheryAcademy.Application.Dtos.PlanDto;
+using ArcheryAcademy.Application.DTOs.RolDto;
 using ArcheryAcademy.Application.DTOs.UserPlanDto;
 using ArcheryAcademy.Application.DTOs.ScheduleDto;
 using ArcheryAcademy.Infrastructure.Persistence.Entities;
@@ -30,5 +31,10 @@ public class MappingProfile: Profile
         CreateMap<Plan, PlanReadDto>().ReverseMap();
         CreateMap<PlanCreateDto, Plan>().ReverseMap();
         CreateMap<PlanUpdateDto, Plan>().ReverseMap();
+        
+        //Role
+        CreateMap<Role, RolCreateDto>().ReverseMap();
+        CreateMap<Role, RolUpdateDto>().ReverseMap();
+        CreateMap<Role, RolUpdateDto>().ReverseMap();
     }
 }
