@@ -46,4 +46,20 @@ public class RoleControler(IMediator mediator, IMapper mapper): ControllerBase
         // 201 CreatedAtAction con la URI y el DTO
         return Ok(result);
     }
+    
+    //update
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateRol(Guid id, [FromBody] RolUpdateDto dto)
+    {
+        if (id != dto.Id)
+            return BadRequest("The ID in the route and the body must match.");
+
+        var command = new UpdateRoleCommand( id, dto);
+        var result = await mediator.Send(command);
+
+        if (result is null)
+            return NotFound($"UserPlan with ID {id} not found.");
+
+        return Ok(result);
+    }
 }
