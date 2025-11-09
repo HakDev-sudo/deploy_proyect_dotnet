@@ -16,4 +16,16 @@ public class ScheduleController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(new GetAllSchedulesQuery());
         return Ok(result);
     }
+
+    // GET: api/schedule/{id}
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<ScheduleReadDto>> GetById(Guid id)
+    {
+        var result = await mediator.Send(new GetScheduleByIdQuery(id));
+
+        if (result == null)
+            return NotFound($"Schedule with ID {id} not found");
+
+        return Ok(result);
+    }
 }
