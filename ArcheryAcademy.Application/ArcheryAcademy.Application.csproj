@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="UseCases\PaymentUseCases\Commands\" />
     <Folder Include="UseCases\UserPlanUseCases\Commands\" />
       <Folder Include="UseCases\ScheduleUseCase\Commands\" />
       <Folder Include="UseCases\ScheduleUseCase\Queries\" />
