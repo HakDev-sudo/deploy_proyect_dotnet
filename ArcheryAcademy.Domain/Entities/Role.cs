@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ArcheryAcademy.Infrastructure.Persistence.Entities;
 
-public partial class Plan
+public partial class Role
 {
     public Guid Id { get; set; }
 
@@ -11,15 +11,7 @@ public partial class Plan
 
     public string? Description { get; set; }
 
-    public decimal Price { get; set; }
-
-    public int? NumClasses { get; set; }
-
-    public int? DurationDays { get; set; }
-
-    public bool? IsActive { get; set; }
-
     public DateTime? CreatedAt { get; set; }
 
-    public virtual ICollection<UserPlan> UserPlans { get; set; } = new List<UserPlan>();
+    public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 }

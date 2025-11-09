@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ArcheryAcademy.Infrastructure.Persistence.Models;
+namespace ArcheryAcademy.Infrastructure.Persistence.Entities;
 
 public partial class UserPlan
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
-    public int UserId { get; set; }
+    public Guid UserId { get; set; }
 
-    public int PlanId { get; set; }
+    public Guid PlanId { get; set; }
 
     public DateOnly StartDate { get; set; }
 

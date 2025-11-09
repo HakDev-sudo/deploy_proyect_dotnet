@@ -2,19 +2,24 @@
 using System.Collections.Generic;
 using ArcheryAcademy.Domain.Enums;
 
-namespace ArcheryAcademy.Infrastructure.Persistence.Models;
+namespace ArcheryAcademy.Infrastructure.Persistence.Entities;
 
 public partial class Booking
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
-    public int UserId { get; set; }
+    public Guid UserId { get; set; }
+
+    public Guid ScheduleId { get; set; }
+
+    public Guid UserPlanId { get; set; }
+    
+    // Mapea a la columna 'status' de tipo 'booking_status'
     public BookingStatus Status { get; set; }
+
+    // Mapea a la columna 'payment_status' de tipo 'payment_status'
     public PaymentStatus PaymentStatus { get; set; }
 
-    public int ScheduleId { get; set; }
-
-    public int? UserPlanId { get; set; }
 
     public DateTime? AttendedAt { get; set; }
 
@@ -26,5 +31,5 @@ public partial class Booking
 
     public virtual User User { get; set; } = null!;
 
-    public virtual UserPlan? UserPlan { get; set; }
+    public virtual UserPlan UserPlan { get; set; } = null!;
 }

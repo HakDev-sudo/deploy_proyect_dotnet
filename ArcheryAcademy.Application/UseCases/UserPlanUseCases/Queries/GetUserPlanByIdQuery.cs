@@ -1,12 +1,12 @@
 using ArcheryAcademy.Application.DTOs.UserPlanDto;
 using ArcheryAcademy.Domain.Ports;
-using ArcheryAcademy.Infrastructure.Persistence.Models;
+using ArcheryAcademy.Infrastructure.Persistence.Entities;
 using AutoMapper;
 using MediatR;
 
 namespace ArcheryAcademy.Application.UseCases.UserPlanUseCases.Queries;
 
-public record GetUserPlanByIdQuery(int Id) : IRequest<UserPlanReadDto?>;
+public record GetUserPlanByIdQuery(Guid Id) : IRequest<UserPlanReadDto?>;
 
 internal sealed class GetUserPlanByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     : IRequestHandler<GetUserPlanByIdQuery, UserPlanReadDto?>

@@ -17,10 +17,10 @@ public class UserPlansController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(new GetAllUserPlansQuery());
         return Ok(result);
     }
-    
+
     // GET by id
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(Guid id)
     {
         var result = await mediator.Send(new GetUserPlanByIdQuery(id));
         if (result == null)
@@ -28,7 +28,7 @@ public class UserPlansController(IMediator mediator) : ControllerBase
 
         return Ok(result);
     }
-    
+
     // post 
     [HttpPost]
     public async Task<IActionResult> CreateUserPlan([FromBody] UserPlanCreateDto dto)
@@ -37,4 +37,33 @@ public class UserPlansController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command);
         return Ok(result);
     }
+
+    //update
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateUserPlan(Guid id, [FromBody] UserPlanUpdateDto dto)
+    {
+        if (id != dto.Id)
+            return BadRequest("The ID in the route and the body must match.");
+
+        var command = new UpdateUserPlanCommand(id, dto);
+        var result = await mediator.Send(command);
+
+        if (result is null)
+            return NotFound($"UserPlan with ID {id} not found.");
+
+        return Ok(result);
+    }
+    
+    //delete
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var result = await mediator.Send(new DeleteUserPlanCommand(id));
+
+        if (!result)
+            return NotFound($"UserPlan with ID {id} was not found.");
+
+        return NoContent();
+    }
+
 }
