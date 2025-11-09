@@ -1,11 +1,11 @@
 using ArcheryAcademy.Domain.Ports;
-using ArcheryAcademy.Infrastructure.Persistence.Models;
+using ArcheryAcademy.Infrastructure.Persistence.Entities;
 using AutoMapper;
 using MediatR;
 
 namespace ArcheryAcademy.Application.DTOs.UserPlanDto;
 
-public record UpdateUserPlanCommand(int UserPlanId, UserPlanUpdateDto UserPlanDto) : IRequest<UserPlan?>;
+public record UpdateUserPlanCommand(Guid UserPlanId, UserPlanUpdateDto UserPlanDto) : IRequest<UserPlan?>;
 
 internal sealed class UpdateUserPlanCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     : IRequestHandler<UpdateUserPlanCommand, UserPlan?>

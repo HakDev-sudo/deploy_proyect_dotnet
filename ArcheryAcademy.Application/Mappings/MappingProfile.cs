@@ -2,7 +2,7 @@ using ArcheryAcademy.Application.Dtos.PaymentDto;
 using ArcheryAcademy.Application.Dtos.PlanDto;
 using ArcheryAcademy.Application.DTOs.UserPlanDto;
 using ArcheryAcademy.Application.DTOs.ScheduleDto;
-using ArcheryAcademy.Infrastructure.Persistence.Models;
+using ArcheryAcademy.Infrastructure.Persistence.Entities;
 using AutoMapper;
 
 namespace ArcheryAcademy.Application.Mappings;
