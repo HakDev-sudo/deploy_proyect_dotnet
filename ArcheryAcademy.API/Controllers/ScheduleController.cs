@@ -1,6 +1,7 @@
 using ArcheryAcademy.Application.DTOs.ScheduleDto;
 using ArcheryAcademy.Application.UseCases.ScheduleUseCase.Commands;
 using ArcheryAcademy.Application.UseCases.ScheduleUseCase.Queries;
+using ArcheryAcademy.Infrastructure.Persistence.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,27 +19,23 @@ public class ScheduleController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    // GET: api/schedule/{id}
-    [HttpGet("{id:guid}")]
-    public async Task<ActionResult<ScheduleReadDto>> GetById(Guid id)
+    // GET by id
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById(Guid id)
     {
         var result = await mediator.Send(new GetScheduleByIdQuery(id));
-
         if (result == null)
-            return NotFound($"Schedule with ID {id} not found");
+            return NotFound(new { message = $"Schedule with ID {id} not found." });
 
         return Ok(result);
     }
 
-    // POST: api/schedule
+    // POST
     [HttpPost]
-    public async Task<ActionResult<ScheduleReadDto>> Create([FromBody] ScheduleCreateDto scheduleDto)
+    public async Task<IActionResult> CreateSchedule([FromBody] ScheduleCreateDto dto)
     {
-        var result = await mediator.Send(new CreateScheduleCommand(scheduleDto));
-
-        return CreatedAtAction(
-            nameof(GetById),
-            new { id = result.Id },
-            result);
+        var command = new CreateScheduleCommand(dto);
+        var result = await mediator.Send(command);
+        return Ok(result);
     }
 }
