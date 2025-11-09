@@ -37,4 +37,19 @@ public class UserPlansController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command);
         return Ok(result);
     }
+    //update
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateUserPlan(int id, [FromBody] UserPlanUpdateDto dto)
+    {
+        if (id != dto.Id)
+            return BadRequest("The ID in the route and the body must match.");
+
+        var command = new UpdateUserPlanCommand(id, dto);
+        var result = await mediator.Send(command);
+
+        if (result is null)
+            return NotFound($"UserPlan with ID {id} not found.");
+
+        return Ok(result);
+    }
 }
