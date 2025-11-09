@@ -1,5 +1,5 @@
 using ArcheryAcademy.Application.Dtos.PaymentDto;
-using ArcheryAcademy.Application.UseCases.PaymentUseCases.Queries;
+using ArcheryAcademy.Application.UseCases.PaymentUseCase.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
