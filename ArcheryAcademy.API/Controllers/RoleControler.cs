@@ -1,5 +1,7 @@
+using ArcheryAcademy.Application.Dtos.PaymentDto;
 using ArcheryAcademy.Application.DTOs.RolDto;
 using ArcheryAcademy.Application.UseCases.PlanUseCases.Queries;
+using ArcheryAcademy.Application.UseCases.RoleUseCases.Commands;
 using ArcheryAcademy.Application.UseCases.RoleUseCases.Queries;
 using AutoMapper;
 using MediatR;
@@ -28,6 +30,20 @@ public class RoleControler(IMediator mediator, IMapper mapper): ControllerBase
         if (result == null)
             return NotFound(new { message = $"Payment with ID {id} not found." });
 
+        return Ok(result);
+    }
+    
+    // POST (Crear)
+    [HttpPost]
+    public async Task<IActionResult> CreateRole([FromBody] RolCreateDto dto)
+    {
+        var command = new CreateRoleCommand(dto);
+        
+        var createdEntity = await mediator.Send(command); 
+        
+        var result = mapper.Map<RolReadDto>(createdEntity);
+        
+        // 201 CreatedAtAction con la URI y el DTO
         return Ok(result);
     }
 }
