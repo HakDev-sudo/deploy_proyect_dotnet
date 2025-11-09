@@ -62,4 +62,17 @@ public class RoleControler(IMediator mediator, IMapper mapper): ControllerBase
 
         return Ok(result);
     }
+    
+    // DELETE
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var result = await mediator.Send(new DeleteRoleCommand(id));
+
+        // El Command devuelve 'true' si se eliminó, 'false' si no se encontró
+        if (!result)
+            return NotFound($"Payment with ID {id} was not found.");
+
+        return NoContent(); // 204 No Content para eliminaciones exitosas
+    }
 }
