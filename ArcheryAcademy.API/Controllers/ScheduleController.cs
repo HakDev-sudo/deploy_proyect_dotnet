@@ -20,7 +20,7 @@ public class ScheduleController(IMediator mediator) : ControllerBase
     }
 
     // GET by id
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
         var result = await mediator.Send(new GetScheduleByIdQuery(id));
@@ -40,7 +40,7 @@ public class ScheduleController(IMediator mediator) : ControllerBase
     }
 
     // DELETE
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id)
     {
         var result = await mediator.Send(new DeleteScheduleCommand(id));
@@ -52,7 +52,7 @@ public class ScheduleController(IMediator mediator) : ControllerBase
     }
 
     // UPDATE
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdateSchedule(Guid id, [FromBody] ScheduleUpdateDto dto)
     {
         if (id != dto.Id)

@@ -13,6 +13,15 @@ internal sealed class CreateScheduleCommandHandler(IUnitOfWork unitOfWork, IMapp
 {
     public async Task<Schedule> Handle(CreateScheduleCommand request, CancellationToken cancellationToken)
     {
+        // Validar que el instructor existe
+        var instructorExists = await unitOfWork.Repository<User>()
+            .GetByIdAsync(request.ScheduleDto.InstructorId);
+        
+        if (instructorExists == null)
+        {
+            throw new KeyNotFoundException(
+                $"Instructor with ID {request.ScheduleDto.InstructorId} not found.");
+        }
         var schedule = mapper.Map<Schedule>(request.ScheduleDto);
         await unitOfWork.Repository<Schedule>().Insert(schedule);
         await unitOfWork.CompleteAsync(cancellationToken);
