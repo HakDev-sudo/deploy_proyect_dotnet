@@ -38,4 +38,16 @@ public class ScheduleController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command);
         return Ok(result);
     }
+
+    // DELETE
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var result = await mediator.Send(new DeleteScheduleCommand(id));
+
+        if (!result)
+            return NotFound($"Schedule with ID {id} was not found.");
+
+        return NoContent();
+    }
 }
