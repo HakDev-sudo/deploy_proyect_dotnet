@@ -17,10 +17,10 @@ public class UserPlansController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(new GetAllUserPlansQuery());
         return Ok(result);
     }
-    
+
     // GET by id
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(Guid id)
     {
         var result = await mediator.Send(new GetUserPlanByIdQuery(id));
         if (result == null)
@@ -28,7 +28,7 @@ public class UserPlansController(IMediator mediator) : ControllerBase
 
         return Ok(result);
     }
-    
+
     // post 
     [HttpPost]
     public async Task<IActionResult> CreateUserPlan([FromBody] UserPlanCreateDto dto)
@@ -37,9 +37,10 @@ public class UserPlansController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command);
         return Ok(result);
     }
+
     //update
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> UpdateUserPlan(int id, [FromBody] UserPlanUpdateDto dto)
+    public async Task<IActionResult> UpdateUserPlan(Guid id, [FromBody] UserPlanUpdateDto dto)
     {
         if (id != dto.Id)
             return BadRequest("The ID in the route and the body must match.");
@@ -55,7 +56,7 @@ public class UserPlansController(IMediator mediator) : ControllerBase
     
     //delete
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(Guid id)
     {
         var result = await mediator.Send(new DeleteUserPlanCommand(id));
 

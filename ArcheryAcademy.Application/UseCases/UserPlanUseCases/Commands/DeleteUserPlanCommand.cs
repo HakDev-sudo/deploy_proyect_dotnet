@@ -1,10 +1,10 @@
 using ArcheryAcademy.Domain.Ports;
-using ArcheryAcademy.Infrastructure.Persistence.Models;
+using ArcheryAcademy.Infrastructure.Persistence.Entities;
 using MediatR;
 
 namespace ArcheryAcademy.Application.UseCases.UserPlanUseCases.Commands;
 
-public record DeleteUserPlanCommand(int Id) : IRequest<bool>;
+public record DeleteUserPlanCommand(Guid Id) : IRequest<bool>;
 
 internal sealed class DeleteUserPlanCommandHandler(IUnitOfWork unitOfWork) 
     : IRequestHandler<DeleteUserPlanCommand, bool>
