@@ -2,7 +2,7 @@ namespace ArcheryAcademy.Application.DTOs.ScheduleDto;
 
 public class ScheduleReadDto
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public int InstructorId { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }

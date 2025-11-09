@@ -50,4 +50,20 @@ public class ScheduleController(IMediator mediator) : ControllerBase
 
         return NoContent();
     }
+
+    // UPDATE
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateSchedule(Guid id, [FromBody] ScheduleUpdateDto dto)
+    {
+        if (id != dto.Id)
+            return BadRequest("The ID in the route and the body must match.");
+
+        var command = new UpdateScheduleCommand(id, dto);
+        var result = await mediator.Send(command);
+
+        if (result is null)
+            return NotFound($"Schedule with ID {id} not found.");
+
+        return Ok(result);
+    }
 }
