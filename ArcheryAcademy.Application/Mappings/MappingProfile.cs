@@ -1,4 +1,5 @@
 using ArcheryAcademy.Application.DTOs.UserPlanDto;
+using ArcheryAcademy.Application.DTOs.ScheduleDto;
 using ArcheryAcademy.Infrastructure.Persistence.Models;
 using AutoMapper;
 
@@ -12,5 +13,10 @@ public class MappingProfile: Profile
         CreateMap<UserPlan, UserPlanReadDto>().ReverseMap();
         CreateMap<UserPlanCreateDto, UserPlan>().ReverseMap();
         CreateMap<UserPlanUpdateDto, UserPlan>().ReverseMap();
+
+        //Schedule
+        CreateMap<Schedule, ScheduleReadDto>().ReverseMap();
+        CreateMap<ScheduleCreateDto, Schedule>().ReverseMap();
+        CreateMap<ScheduleUpdateDto, Schedule>().ReverseMap();
     }
 }
