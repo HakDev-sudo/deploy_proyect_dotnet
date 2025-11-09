@@ -1,9 +1,11 @@
 namespace ArcheryAcademy.Application.DTOs.UserPlanDto;
 
-public class UserPlanCreateDto
-{
-    public int PlanId { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
-    public int? RemainingClasses { get; set; }
-}
+    public class UserPlanCreateDto
+    {
+        public int UserId { get; set; }
+        public int PlanId { get; set; }
+        public DateOnly StartDate { get; set; }
+        public DateOnly EndDate { get; set; }
+        public int? RemainingClasses { get; set; }
+        public bool? IsActive { get; set; }
+    }

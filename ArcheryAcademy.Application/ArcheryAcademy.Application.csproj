@@ -13,11 +13,9 @@
   <ItemGroup>
     <Folder Include="UseCases\PaymentUseCases\Commands\" />
     <Folder Include="UseCases\UserPlanUseCases\Commands\" />
-      <Folder Include="UseCases\ScheduleUseCase\Commands\" />
-      <Folder Include="UseCases\ScheduleUseCase\Queries\" />
   </ItemGroup>
 
-    <PropertyGroup>
+  <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>

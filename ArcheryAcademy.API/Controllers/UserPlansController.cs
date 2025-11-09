@@ -1,4 +1,5 @@
 using ArcheryAcademy.Application.DTOs.UserPlanDto;
+using ArcheryAcademy.Application.UseCases.UserPlanUseCases.Commands;
 using ArcheryAcademy.Application.UseCases.UserPlanUseCases.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,41 @@ public class UserPlansController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<List<UserPlanReadDto>>> GetAll()
     {
         var result = await mediator.Send(new GetAllUserPlansQuery());
+        return Ok(result);
+    }
+    
+    // GET by id
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var result = await mediator.Send(new GetUserPlanByIdQuery(id));
+        if (result == null)
+            return NotFound(new { message = $"UserPlan with ID {id} not found." });
+
+        return Ok(result);
+    }
+    
+    // post 
+    [HttpPost]
+    public async Task<IActionResult> CreateUserPlan([FromBody] UserPlanCreateDto dto)
+    {
+        var command = new CreateUserPlanCommand(dto);
+        var result = await mediator.Send(command);
+        return Ok(result);
+    }
+    //update
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateUserPlan(int id, [FromBody] UserPlanUpdateDto dto)
+    {
+        if (id != dto.Id)
+            return BadRequest("The ID in the route and the body must match.");
+
+        var command = new UpdateUserPlanCommand(id, dto);
+        var result = await mediator.Send(command);
+
+        if (result is null)
+            return NotFound($"UserPlan with ID {id} not found.");
+
         return Ok(result);
     }
 }
