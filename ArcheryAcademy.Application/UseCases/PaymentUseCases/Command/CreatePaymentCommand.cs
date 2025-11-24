@@ -1,6 +1,6 @@
 using ArcheryAcademy.Application.Dtos.PaymentDto;
 using ArcheryAcademy.Domain.Ports;
-using ArcheryAcademy.Infrastructure.Persistence.Entities;
+using ArcheryAcademy.Domain.Entities;
 using AutoMapper;
 using MediatR;
 

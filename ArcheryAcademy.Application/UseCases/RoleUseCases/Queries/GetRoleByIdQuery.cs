@@ -1,7 +1,6 @@
 using ArcheryAcademy.Application.DTOs.RolDto;
-using ArcheryAcademy.Application.DTOs.UserPlanDto;
+using ArcheryAcademy.Domain.Entities;
 using ArcheryAcademy.Domain.Ports;
-using ArcheryAcademy.Infrastructure.Persistence.Entities;
 using AutoMapper;
 using MediatR;
 

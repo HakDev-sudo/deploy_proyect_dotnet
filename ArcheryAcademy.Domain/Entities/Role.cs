@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ArcheryAcademy.Infrastructure.Persistence.Entities;
+namespace ArcheryAcademy.Domain.Entities;
 
 public partial class Role
 {

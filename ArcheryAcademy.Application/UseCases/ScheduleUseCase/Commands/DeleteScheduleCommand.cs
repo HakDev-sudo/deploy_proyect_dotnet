@@ -1,5 +1,5 @@
+using ArcheryAcademy.Domain.Entities;
 using ArcheryAcademy.Domain.Ports;
-using ArcheryAcademy.Infrastructure.Persistence.Entities;
 using MediatR;
 
 namespace ArcheryAcademy.Application.UseCases.ScheduleUseCase.Commands;

@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using ArcheryAcademy.Infrastructure.Persistence.Entities;
+using ArcheryAcademy.Domain.Entities;
+using ArcheryAcademy.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArcheryAcademy.Infrastructure.Persistence;
 
 public partial class ArcheryAcademyDbContext : DbContext
 {
-    public ArcheryAcademyDbContext()
-    {
-    }
-
     public ArcheryAcademyDbContext(DbContextOptions<ArcheryAcademyDbContext> options)
         : base(options)
     {
@@ -18,7 +15,13 @@ public partial class ArcheryAcademyDbContext : DbContext
 
     public virtual DbSet<Booking> Bookings { get; set; }
 
+    public virtual DbSet<BookingStatus> BookingStatuses { get; set; }
+
     public virtual DbSet<Payment> Payments { get; set; }
+
+    public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }
+
+    public virtual DbSet<PaymentStatus> PaymentStatuses { get; set; }
 
     public virtual DbSet<Plan> Plans { get; set; }
 
@@ -32,23 +35,23 @@ public partial class ArcheryAcademyDbContext : DbContext
 
     public virtual DbSet<UserRole> UserRoles { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=localhost;Database=arcoreserva;Username=postgres;Password=secret");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder
-            .HasPostgresEnum("booking_status", new[] { "pending", "confirmed", "cancelled", "completed" })
-            .HasPostgresEnum("payment_method", new[] { "credit_card", "debit_card", "cash", "bank_transfer" })
-            .HasPostgresEnum("payment_status", new[] { "pending", "paid", "failed", "refunded" })
-            .HasPostgresExtension("uuid-ossp");
+        modelBuilder.HasPostgresExtension("uuid-ossp");
 
         modelBuilder.Entity<Booking>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("bookings_pkey");
 
             entity.ToTable("bookings");
+
+            entity.HasIndex(e => e.PaymentStatusId, "idx_bookings_payment_status");
+
+            entity.HasIndex(e => e.ScheduleId, "idx_bookings_schedule");
+
+            entity.HasIndex(e => e.StatusId, "idx_bookings_status");
+
+            entity.HasIndex(e => e.UserId, "idx_bookings_user");
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("uuid_generate_v4()")
@@ -60,13 +63,25 @@ public partial class ArcheryAcademyDbContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("created_at");
+            entity.Property(e => e.PaymentStatusId).HasColumnName("payment_status_id");
             entity.Property(e => e.ScheduleId).HasColumnName("schedule_id");
+            entity.Property(e => e.StatusId).HasColumnName("status_id");
             entity.Property(e => e.UserId).HasColumnName("user_id");
             entity.Property(e => e.UserPlanId).HasColumnName("user_plan_id");
+
+            entity.HasOne(d => d.PaymentStatus).WithMany(p => p.Bookings)
+                .HasForeignKey(d => d.PaymentStatusId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("fk_booking_payment_status");
 
             entity.HasOne(d => d.Schedule).WithMany(p => p.Bookings)
                 .HasForeignKey(d => d.ScheduleId)
                 .HasConstraintName("fk_schedule_booking");
+
+            entity.HasOne(d => d.Status).WithMany(p => p.Bookings)
+                .HasForeignKey(d => d.StatusId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("fk_booking_status");
 
             entity.HasOne(d => d.User).WithMany(p => p.Bookings)
                 .HasForeignKey(d => d.UserId)
@@ -77,11 +92,43 @@ public partial class ArcheryAcademyDbContext : DbContext
                 .HasConstraintName("fk_user_plan_booking");
         });
 
+        modelBuilder.Entity<BookingStatus>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("booking_statuses_pkey");
+
+            entity.ToTable("booking_statuses");
+
+            entity.HasIndex(e => e.Code, "booking_statuses_code_key").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Code)
+                .HasMaxLength(20)
+                .HasColumnName("code");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("created_at");
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.DisplayOrder).HasColumnName("display_order");
+            entity.Property(e => e.IsActive)
+                .HasDefaultValue(true)
+                .HasColumnName("is_active");
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .HasColumnName("name");
+        });
+
         modelBuilder.Entity<Payment>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("payments_pkey");
 
             entity.ToTable("payments");
+
+            entity.HasIndex(e => e.BookingId, "idx_payments_booking");
+
+            entity.HasIndex(e => e.MethodId, "idx_payments_method");
+
+            entity.HasIndex(e => e.StatusId, "idx_payments_status");
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("uuid_generate_v4()")
@@ -94,11 +141,75 @@ public partial class ArcheryAcademyDbContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("created_at");
+            entity.Property(e => e.MethodId).HasColumnName("method_id");
+            entity.Property(e => e.StatusId).HasColumnName("status_id");
 
             entity.HasOne(d => d.Booking).WithMany(p => p.Payments)
                 .HasForeignKey(d => d.BookingId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("fk_booking_payment");
+
+            entity.HasOne(d => d.Method).WithMany(p => p.Payments)
+                .HasForeignKey(d => d.MethodId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("fk_payment_method");
+
+            entity.HasOne(d => d.Status).WithMany(p => p.Payments)
+                .HasForeignKey(d => d.StatusId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("fk_payment_status");
+        });
+
+        modelBuilder.Entity<PaymentMethod>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("payment_methods_pkey");
+
+            entity.ToTable("payment_methods");
+
+            entity.HasIndex(e => e.Code, "payment_methods_code_key").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Code)
+                .HasMaxLength(30)
+                .HasColumnName("code");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("created_at");
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.DisplayOrder).HasColumnName("display_order");
+            entity.Property(e => e.IsActive)
+                .HasDefaultValue(true)
+                .HasColumnName("is_active");
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .HasColumnName("name");
+        });
+
+        modelBuilder.Entity<PaymentStatus>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("payment_statuses_pkey");
+
+            entity.ToTable("payment_statuses");
+
+            entity.HasIndex(e => e.Code, "payment_statuses_code_key").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Code)
+                .HasMaxLength(20)
+                .HasColumnName("code");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("created_at");
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.DisplayOrder).HasColumnName("display_order");
+            entity.Property(e => e.IsActive)
+                .HasDefaultValue(true)
+                .HasColumnName("is_active");
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .HasColumnName("name");
         });
 
         modelBuilder.Entity<Plan>(entity =>
@@ -156,6 +267,8 @@ public partial class ArcheryAcademyDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("schedules_pkey");
 
             entity.ToTable("schedules");
+
+            entity.HasIndex(e => e.InstructorId, "idx_schedules_instructor");
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("uuid_generate_v4()")
@@ -227,6 +340,8 @@ public partial class ArcheryAcademyDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("user_plans_pkey");
 
             entity.ToTable("user_plans");
+
+            entity.HasIndex(e => e.UserId, "idx_user_plans_user");
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("uuid_generate_v4()")

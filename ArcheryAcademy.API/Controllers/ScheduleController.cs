@@ -1,7 +1,6 @@
 using ArcheryAcademy.Application.DTOs.ScheduleDto;
 using ArcheryAcademy.Application.UseCases.ScheduleUseCase.Commands;
 using ArcheryAcademy.Application.UseCases.ScheduleUseCase.Queries;
-using ArcheryAcademy.Infrastructure.Persistence.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

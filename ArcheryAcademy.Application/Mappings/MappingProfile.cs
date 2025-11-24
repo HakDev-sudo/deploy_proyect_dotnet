@@ -3,7 +3,7 @@ using ArcheryAcademy.Application.Dtos.PlanDto;
 using ArcheryAcademy.Application.DTOs.RolDto;
 using ArcheryAcademy.Application.DTOs.UserPlanDto;
 using ArcheryAcademy.Application.DTOs.ScheduleDto;
-using ArcheryAcademy.Infrastructure.Persistence.Entities;
+using ArcheryAcademy.Domain.Entities;
 using AutoMapper;
 
 namespace ArcheryAcademy.Application.Mappings;
@@ -23,7 +23,9 @@ public class MappingProfile: Profile
         CreateMap<ScheduleUpdateDto, Schedule>().ReverseMap();
         
         //Payment
-        CreateMap<Payment, PaymentReadDto>().ReverseMap();
+        CreateMap<Payment, PaymentReadDto>()
+            .ForMember(dest => dest.Method, opt => opt.MapFrom(src => src.Method != null ? src.Method.Name : null))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status != null ? src.Status.Name : null));
         CreateMap<PaymentCreateDto, Payment>().ReverseMap();
         CreateMap<PaymentUpdateDto, Payment>().ReverseMap();
         

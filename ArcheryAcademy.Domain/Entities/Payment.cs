@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using ArcheryAcademy.Domain.Enums;
 
-namespace ArcheryAcademy.Infrastructure.Persistence.Entities;
+namespace ArcheryAcademy.Domain.Entities;
 
 public partial class Payment
 {
@@ -11,11 +10,16 @@ public partial class Payment
     public Guid BookingId { get; set; }
 
     public decimal Amount { get; set; }
-    
-    public PaymentStatus PaymentStatus { get; set; }
-    public PaymentMethod PaymentMethod { get; set; }
+
+    public int MethodId { get; set; }
+
+    public int StatusId { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 
     public virtual Booking Booking { get; set; } = null!;
+
+    public virtual PaymentMethod Method { get; set; } = null!;
+
+    public virtual PaymentStatus Status { get; set; } = null!;
 }
