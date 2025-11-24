@@ -18,7 +18,7 @@ if (app.Environment.IsDevelopment() || enableSwagger)
 
 // Routing
 app.UseRouting();
-
+app.MapGet("/health", () => Results.Ok(new { status = "Healthy", time = DateTime.UtcNow }));
 // Middlewares personalizados 
 //app.UseMiddleware<ErrorHandlingMiddleware>();           
 //app.UseMiddleware<ParameterValidationMiddleware>();
