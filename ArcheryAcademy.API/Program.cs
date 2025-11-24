@@ -8,14 +8,12 @@ builder.Services.AddApiServices(builder.Configuration);
 var app = builder.Build();
 
 // use Swagger
-if (app.Environment.IsDevelopment())
+
+var enableSwagger = app.Configuration.GetValue<bool>("EnableSwagger");
+if (app.Environment.IsDevelopment() || enableSwagger)
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-        c.RoutePrefix = string.Empty; // Swagger en la raíz
-    });
+    app.UseSwaggerUI();
 }
 
 // Routing
