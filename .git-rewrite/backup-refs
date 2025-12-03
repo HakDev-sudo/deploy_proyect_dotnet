@@ -1,0 +1,10 @@
+e2d1123e16157c0174e0ded6a6736d59b41c6dab commit	refs/heads/dev-tests
+e7865a6ce9df7764a7f204995ab27da8470d2eff commit	refs/heads/feature/certificate-service
+91e5fdfb20bf852b0505d8939d9974f1e284f370 commit	refs/heads/feature/googleCalendar-service
+f2657d2fde4dd1b3f0412d75cbd0043ba1b571eb commit	refs/heads/functional-all-crud
+c35c71db10f4f2dda4b6f3bc8df6590c81c57efd commit	refs/heads/main
+710df1dc4d2fe7ae60ae8f20c8cf14c5e471db28 commit	refs/heads/new-scaffold
+c9473257870441e062285fceae42d6481e204699 commit	refs/remotes/deploy/main
+5481cdd889b7022bfdcfcf29a6d8fa4b0741fbfe commit	refs/remotes/team/HEAD
+5481cdd889b7022bfdcfcf29a6d8fa4b0741fbfe commit	refs/remotes/team/main
+9e018c0e72536064cc1fb453f5da300b569ef4f1 commit	refs/stash
